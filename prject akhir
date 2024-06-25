@@ -1,0 +1,64 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QVBoxLayout, QWidget, QHBoxLayout
+class MyApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.initUI()
+
+    def initUI(self):
+        # Membuat widget utama
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
+        # Membuat layout utama
+        main_layout = QVBoxLayout()
+
+        # Membuat layout untuk input harga
+        price_layout = QHBoxLayout()
+        price_label = QLabel('Harga Barang:', self)
+        self.price_edit = QLineEdit(self)
+        price_layout.addWidget(price_label)
+        price_layout.addWidget(self.price_edit)
+        main_layout.addLayout(price_layout)
+
+        # Membuat layout untuk input jumlah
+        qty_layout = QHBoxLayout()
+        qty_label = QLabel('Jumlah Barang:', self)
+        self.qty_edit = QLineEdit(self)
+        qty_layout.addWidget(qty_label)
+        qty_layout.addWidget(self.qty_edit)
+        main_layout.addLayout(qty_layout)
+
+        # Membuat tombol untuk menghitung total
+        self.button = QPushButton('Hitung Total', self)
+        self.button.clicked.connect(self.calculate_total)
+        main_layout.addWidget(self.button)
+
+        # Membuat label untuk menampilkan hasil
+        self.result_label = QLabel('Total Harga: ', self)
+        main_layout.addWidget(self.result_label)
+
+        # Mengatur layout ke widget utama
+        central_widget.setLayout(main_layout)
+
+        # Mengatur properti jendela
+        self.setWindowTitle('Perhitungan Harga Barang')
+        self.setGeometry(300, 300, 400, 200)
+
+    def calculate_total(self):
+        # Mengambil nilai dari QLineEdit dan menghitung total
+        try:
+            price = float(self.price_edit.text())
+            qty = int(self.qty_edit.text())
+            total = price * qty
+            self.result_label.setText(f'Total Harga: {total}')
+        except ValueError:
+            self.result_label.setText('Input tidak valid. Harap masukkan angka.')
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    ex.show()
+    sys.exit(app.exec_())
